@@ -1,0 +1,28 @@
+{
+  "name": "nodejs_blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nghiaphamhb/nodejs_blog.git"
+  },
+  "keywords": [
+    "f8",
+    "blog",
+    "node.js"
+  ],
+  "author": "nghiaphamhb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nghiaphamhb/nodejs_blog/issues"
+  },
+  "homepage": "https://github.com/nghiaphamhb/nodejs_blog#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
