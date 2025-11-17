@@ -9,6 +9,8 @@ const port = 3000
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
+app.use(express.static(path.join(__dirname, 'public')));  // public path for static files (_dirname/public/*)
+
 // HTTP logger
 app.use(morgan('combined'))
 
