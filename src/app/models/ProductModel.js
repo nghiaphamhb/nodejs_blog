@@ -105,6 +105,20 @@ class ProductModel {
     // PostgreSQL trả count dạng string
     return parseInt(result.rows[0].count, 10);
   }
+
+  // soft delete many items 
+  static async softDeleteMany(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return;
+
+  const placeholders = ids.map((_, idx) => `$${idx + 1}`).join(', ');
+  const sql = `
+    UPDATE products
+    SET "deletedAt" = NOW()
+    WHERE id IN (${placeholders})
+  `;
+  return query(sql, ids);
+}
+
 }
 
 export default ProductModel;

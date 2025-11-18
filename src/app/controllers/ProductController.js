@@ -182,8 +182,45 @@ async forceDelete(req, res, next) {
 
     next(err);
   }
+  
 }
 
+  // [POST] /product/handle-form-action
+async handleFormAction(req, res, next) {
+  try {
+    const { action } = req.body;
+
+    // Tên field trong form là "foods[]"
+    // tuỳ body-parser có thể là req.body.foods hoặc req.body['foods[]']
+    let foodIds = req.body.foods || req.body['foods[]'];
+
+    // Chuẩn hoá thành mảng
+    if (!Array.isArray(foodIds)) {
+      foodIds = foodIds ? [foodIds] : [];
+    }
+
+    switch (action) {
+      case 'delete':
+        if (foodIds.length === 0) {
+          // Không chọn gì mà bấm Execute → quay lại
+          return res.redirect('/me/stored/products');
+        }
+
+        // Soft delete nhiều sản phẩm
+        await ProductModel.softDeleteMany(foodIds);
+        return res.redirect('/me/stored/products');
+
+      case 'edit':
+        // Tuỳ bài: thường action "edit" cho 1 item, hoặc bạn có thể chặn
+        return res.json({ message: 'Edit action for multiple items is not implemented.' });
+
+      default:
+        return res.json({ message: 'Action is invalid!' });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
 
 }
 

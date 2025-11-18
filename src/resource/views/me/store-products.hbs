@@ -1,11 +1,47 @@
-<div class="mt-4">
+<form class="mt-4" method="post" action="/product/handle-form-action">
     <h1>My foods</h1>
     <a href="/me/trash/products" style="margin: 20px 0; padding: 5px; text-decoration: none;">
     My trash ({{deletedCount}})</a>
+    <div class="mt-4" style="display: flex; flex-direction: row; gap: 5px;">
+      <li class="list-group-item" style="border: none;">
+        <input class="form-check-input me-1" type="checkbox" value="" id="checkbox-all">
+        Select all
+      </li>
+
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1"
+                type="button"
+                class="btn btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="background: aliceblue; color: rgb(47, 47, 254);">
+          --Action--
+        </button>
+
+        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <li>
+            <a class="dropdown-item" href="#" data-value="edit">Edit</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" data-value="delete">Delete</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- nếu muốn gửi action về server thì thêm input ẩn -->
+      <input type="hidden" name="action" id="actionInput">
+    
+      <div class="btn-group" role="group">
+        <button id="" type="button" class="btn btn-primary disabled check-all-submit-btn">
+          Execute
+        </button> 
+      </div>
+      
+    </div>
     <table class="table">
         <thead>
             <tr>
-            <th scope="col">#</th>
+            <th scope="col" colspan="2">#</th>
             <th scope="col">Food's name</th>
             <th scope="col" colspan="2">Description</th>
             </tr>
@@ -13,6 +49,9 @@
         <tbody>
             {{#each foods}}
             <tr>
+                <td>
+                  <input class="form-check-input me-1" type="checkbox" name="foods[]" value="{{this.id}}">
+                </td>
                 <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.description}}</td>
@@ -31,7 +70,7 @@
             {{/each}}
         </tbody>
         </table>
-</div>
+</form>
 
 {{!-- Confirm delete food modal - Bootstrap 5 --}}
 <div id="delete-food-modal" class="modal fade" tabindex="-1">
@@ -61,6 +100,10 @@
         var deleteForm = document.forms['delete-food-form'];
         var btnDeleteFood = document.getElementById('btn-delete-food');
         var deleteFoodModal = document.getElementById('delete-food-modal');
+        var checkboxAll = $('#checkbox-all');
+        var foodsItemCheckbox = $('input[name="foods[]"]');
+        var checkAllSubmitBtn = $('.check-all-submit-btn');
+        var containerForm = $('form[class="mt-4"]');
 
         // When dialog confirm clicked - Bootstrap 5
         deleteFoodModal.addEventListener('show.bs.modal', function (event) {
@@ -76,5 +119,58 @@
                 deleteForm.submit();
             } 
         }
+
+        // checkbox all changed
+        checkboxAll.change(function() {
+          var isCheckedAll = $(this).prop('checked');
+          foodsItemCheckbox.prop('checked', isCheckedAll);
+          renderCheckAllSubmitBtn();
+        })
+
+        // foods item checkbox changed
+        foodsItemCheckbox.change(function() {
+          var isCheckedAll = foodsItemCheckbox.length === $('input[name="foods[]"]:checked').length;
+          checkboxAll.prop('checked', isCheckedAll);
+          renderCheckAllSubmitBtn();
+        })
+
+        // rerender check all submit button
+        function renderCheckAllSubmitBtn() {
+          var checkedCount =  $('input[name="foods[]"]:checked').length;
+          if(checkedCount > 0) {
+              checkAllSubmitBtn.removeClass('disabled');
+          } else {
+            checkAllSubmitBtn.addClass('disabled');
+          }
+        }
+
+        $(function () {
+          $('.dropdown-menu .dropdown-item').on('click', function (e) {
+            e.preventDefault();
+
+            const text  = $(this).text().trim();       // "Edit" hoặc "Delete"
+            const value = $(this).data('value');       // "edit" hoặc "delete"
+
+            // đổi text của nút
+            $('#btnGroupDrop1').text(text);
+
+            // nếu có input hidden -> set value để submit form
+            $('#actionInput').val(value);
+          });
+        });
+
+        checkAllSubmitBtn.on('click', function(e){
+          var isSubmittable = !$(this).hasClass('disabled');
+          if (!isSubmittable) {
+            e.preventDefault();
+            return;
+          }
+
+          // Nếu cho phép submit, submit form chứa nó
+          containerForm.submit();
+        });
+
+
+
     });
 </script>
