@@ -94,7 +94,7 @@ class ProductController {
       }
 
       // Xóa product
-      const result = await ProductModel.delete(id);
+      const result = await ProductModel.softDelete(id);
       
       if (result) {
         // Nếu là AJAX request (từ fetch)
