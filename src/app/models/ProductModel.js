@@ -97,7 +97,14 @@ class ProductModel {
     }
   }
 
-
+  // Đếm số product đã bị soft delete
+  static async countDeleted() {
+    const result = await query(
+      'SELECT COUNT(*) FROM products WHERE "deletedAt" IS NOT NULL'
+    );
+    // PostgreSQL trả count dạng string
+    return parseInt(result.rows[0].count, 10);
+  }
 }
 
 export default ProductModel;
