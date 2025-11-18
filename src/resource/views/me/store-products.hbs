@@ -1,0 +1,72 @@
+<div class="mt-4">
+    <h1>My foods</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Food's name</th>
+            <th scope="col" colspan="2">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each foods}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>
+                    <a href="/product/{{this.id}}/edit" class="btn btn-link">Edit</a>
+                    <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-food-modal" data-id="{{this.id}}">Remove</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+</div>
+
+{{!-- Confirm delete food modal - Bootstrap 5 --}}
+<div id="delete-food-modal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete food?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to delete this food?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-food" type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-food-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var foodId;
+        var deleteForm = document.forms['delete-food-form'];
+        var btnDeleteFood = document.getElementById('btn-delete-food');
+        var deleteFoodModal = document.getElementById('delete-food-modal');
+
+        // When dialog confirm clicked - Bootstrap 5
+        deleteFoodModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            foodId = button.getAttribute('data-id');
+            console.log('Food ID to delete:', foodId);
+        });
+        
+        // When delete food btn clicked
+        btnDeleteFood.onclick = function () {
+            if (deleteForm) {
+                deleteForm.action = '/product/' + foodId + '?_method=DELETE';
+                deleteForm.submit();
+            } 
+        }
+    });
+</script>

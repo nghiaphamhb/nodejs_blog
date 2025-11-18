@@ -1,0 +1,58 @@
+{{!-- views/product-result.hbs --}}
+<div class="container my-5" style="max-width: 600px;">
+
+  {{#if success}}
+    <div class="alert alert-success">
+      🎉 Thêm sản phẩm thành công!
+    </div>
+
+    <div class="card shadow-sm">
+      {{#if product.image}}
+        <img
+          src="{{product.image}}"
+          class="card-img-top"
+          alt="{{product.name}}"
+          style="object-fit: cover; max-height: 260px;"
+        >
+      {{/if}}
+
+      <div class="card-body">
+        <h5 class="card-title mb-2">{{product.name}}</h5>
+        <p class="card-text text-muted mb-1">
+          <strong>ID:</strong> {{product.id}}
+        </p>
+        <p class="card-text">
+          {{#if product.description}}
+            {{product.description}}
+          {{else}}
+            Không có mô tả.
+          {{/if}}
+        </p>
+
+        <div class="d-flex gap-2 mt-3">
+          <a href="/" class="btn btn-outline-secondary">
+            ← Về danh sách sản phẩm
+          </a>
+          <a href="/product/create" class="btn btn-primary">
+            Thêm sản phẩm mới
+          </a>
+        </div>
+      </div>
+    </div>
+
+  {{else}}
+    <div class="alert alert-danger">
+      ❌ Đã xảy ra lỗi khi thêm sản phẩm.
+      {{#if error}}
+        <div class="mt-2">
+          <small>Chi tiết: {{error}}</small>
+        </div>
+      {{/if}}
+    </div>
+
+    <a href="/product/create" class="btn btn-primary">
+      ← Thử lại
+    </a>
+  {{/if}}
+
+</div>

@@ -1,0 +1,56 @@
+{{!-- views/product-create.hbs --}}
+<div class="container my-5" style="max-width: 600px;">
+  <h1 class="h3 mb-4">Thêm sản phẩm mới</h1>
+
+  {{!-- Hiển thị lỗi chung nếu có --}}
+  {{#if error}}
+    <div class="alert alert-danger">
+      {{error}}
+    </div>
+  {{/if}}
+
+  <form action="/product/create" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Tên sản phẩm</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Nhập tên sản phẩm"
+        required
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Mô tả</label>
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        rows="4"
+        placeholder="Nhập mô tả sản phẩm (tuỳ chọn)"
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Đường dẫn ảnh (URL hoặc /images/...)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="image"
+        name="image"
+        placeholder="/im/cafe-sua-da.jpg hoặc https://..."
+      >
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="/product" class="btn btn-outline-secondary">
+        ← Quay lại danh sách
+      </a>
+      <button type="submit" class="btn btn-primary">
+        Lưu sản phẩm
+      </button>
+    </div>
+  </form>
+</div>
