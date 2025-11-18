@@ -3,7 +3,7 @@
 
   {{#if success}}
     <div class="alert alert-success">
-      🎉 Thêm sản phẩm thành công!
+      🎉 Successful created products!
     </div>
 
     <div class="card shadow-sm">
@@ -25,16 +25,16 @@
           {{#if product.description}}
             {{product.description}}
           {{else}}
-            Không có mô tả.
+            No description.
           {{/if}}
         </p>
 
         <div class="d-flex gap-2 mt-3">
           <a href="/" class="btn btn-outline-secondary">
-            ← Về danh sách sản phẩm
+            ← Return to list
           </a>
           <a href="/product/create" class="btn btn-primary">
-            Thêm sản phẩm mới
+            Create new
           </a>
         </div>
       </div>
@@ -42,16 +42,16 @@
 
   {{else}}
     <div class="alert alert-danger">
-      ❌ Đã xảy ra lỗi khi thêm sản phẩm.
+      ❌ An error occurred when creating the product.
       {{#if error}}
         <div class="mt-2">
-          <small>Chi tiết: {{error}}</small>
+          <small>Error details: {{error}}</small>
         </div>
       {{/if}}
     </div>
 
     <a href="/product/create" class="btn btn-primary">
-      ← Thử lại
+      ← Try again
     </a>
   {{/if}}
 
