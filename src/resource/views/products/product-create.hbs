@@ -1,6 +1,6 @@
 {{!-- views/product-create.hbs --}}
 <div class="container my-5" style="max-width: 600px;">
-  <h1 class="h3 mb-4">Thêm sản phẩm mới</h1>
+  <h1 class="h3 mb-4">Create new product</h1>
 
   {{!-- Hiển thị lỗi chung nếu có --}}
   {{#if error}}
@@ -11,45 +11,45 @@
 
   <form action="/product/create" method="POST">
     <div class="mb-3">
-      <label for="name" class="form-label">Tên sản phẩm</label>
+      <label for="name" class="form-label">Product's name</label>
       <input
         type="text"
         class="form-control"
         id="name"
         name="name"
-        placeholder="Nhập tên sản phẩm"
+        placeholder="Enter product name"
         required
       >
     </div>
 
     <div class="mb-3">
-      <label for="description" class="form-label">Mô tả</label>
+      <label for="description" class="form-label">Description</label>
       <textarea
         class="form-control"
         id="description"
         name="description"
         rows="4"
-        placeholder="Nhập mô tả sản phẩm (tuỳ chọn)"
+        placeholder="Enter product description (optional)"
       ></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="image" class="form-label">Đường dẫn ảnh (URL hoặc /images/...)</label>
+      <label for="image" class="form-label">URL image (URL or /images/...)</label>
       <input
         type="text"
         class="form-control"
         id="image"
         name="image"
-        placeholder="/im/cafe-sua-da.jpg hoặc https://..."
+        placeholder="/im/cafe-sua-da.jpg or https://..."
       >
     </div>
 
     <div class="d-flex justify-content-between">
-      <a href="/product" class="btn btn-outline-secondary">
-        ← Quay lại danh sách
+      <a href="/me/stored/products" class="btn btn-outline-secondary">
+        ← Back to the list
       </a>
       <button type="submit" class="btn btn-primary">
-        Lưu sản phẩm
+        Save
       </button>
     </div>
   </form>
