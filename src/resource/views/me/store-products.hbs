@@ -20,6 +20,13 @@
                     <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-food-modal" data-id="{{this.id}}">Remove</a>
                 </td>
             </tr>
+            {{else}}
+            <tr>
+              <td colspan="5" class="text-center">
+                You dont have any foods. <br>
+                <a href="/product/create">Create new food</a>
+              </td>
+            </tr>
             {{/each}}
         </tbody>
         </table>
