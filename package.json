@@ -2,10 +2,10 @@
   "name": "nodejs_blog",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/app.js",
   "scripts": {
-    "beautiful" : "prettier --write --single-quote --trailing-comma all 'src/**/*.{js,json}' ",
-    "start": "nodemon --inspect src/index.js",
+    "beautiful": "prettier --write --single-quote --trailing-comma all 'src/**/*.{js,json}' ",
+    "start": "nodemon --inspect src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,7 +25,8 @@
   "homepage": "https://github.com/nghiaphamhb/nodejs_blog#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "express-handlebars": "^8.0.3"
+    "express-handlebars": "^8.0.3",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "morgan": "^1.10.1",
