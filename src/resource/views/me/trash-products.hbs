@@ -1,7 +1,8 @@
 <div class="mt-4">
-    <h1>My foods</h1>
-    <a href="/me/trash/products" style="margin: 20px 0; padding: 5px;">
-    My trash</a>
+    
+    <a href="/me/stored/products">
+    Return to list</a>
+    <h1>My trash</h1>
     <table class="table">
         <thead>
             <tr>
@@ -11,21 +12,20 @@
             </tr>
         </thead>
         <tbody>
-            {{#each foods}}
+            {{#each deletedFoods}}
             <tr>
                 <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.description}}</td>
                 <td>
-                    <a href="/product/{{this.id}}/edit" class="btn btn-link">Edit</a>
-                    <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-food-modal" data-id="{{this.id}}">Remove</a>
+                    <a href="" class="btn btn-link btn-restore" data-id="{{this.id}}">Restore</a>
+                    <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-food-modal" data-id="{{this.id}}">Destroy</a>
                 </td>
             </tr>
             {{else}}
             <tr>
               <td colspan="5" class="text-center">
-                You dont have any foods. <br>
-                <a href="/product/create">Create new food</a>
+                Trash empty
               </td>
             </tr>
             {{/each}}
@@ -38,14 +38,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Remove food?</h5>
+        <h5 class="modal-title">Destroy food?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Do you really want to remove this food?</p>
+        <p>Do you really want to destroy this food?</p>
       </div>
       <div class="modal-footer">
-        <button id="btn-delete-food" type="button" class="btn btn-danger">Remove</button>
+        <button id="btn-delete-food" type="button" class="btn btn-danger">Destroy</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -54,13 +54,26 @@
 
 {{!-- Delete hidden form --}}
 <form name="delete-food-form" method="POST"></form>
+{{!-- Restore hidden form --}}
+<form name="restore-food-form" method="POST"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var foodId;
         var deleteForm = document.forms['delete-food-form'];
+        var restoreForm = document.forms['restore-food-form'];
         var btnDeleteFood = document.getElementById('btn-delete-food');
         var deleteFoodModal = document.getElementById('delete-food-modal');
+        var restoreBtn = $('.btn-restore')
+
+        // Restore btn clicked
+        restoreBtn.click(function (e) {
+          e.preventDefault();
+          
+          var foodId = $(this).data('id');
+          restoreForm.action = '/product/' + foodId + '/restore?_method=PATCH';
+          restoreForm.submit();
+        });
 
         // When dialog confirm clicked - Bootstrap 5
         deleteFoodModal.addEventListener('show.bs.modal', function (event) {
@@ -69,12 +82,14 @@
             console.log('Food ID to delete:', foodId);
         });
         
-        // When delete food btn clicked
+        // When destroy food btn clicked
         btnDeleteFood.onclick = function () {
-            if (deleteForm) {
-                deleteForm.action = '/product/' + foodId + '?_method=DELETE';
-                deleteForm.submit();
-            } 
+          if (deleteForm) {
+            // HARD DELETE (destroy) dùng /force
+            deleteForm.action = '/product/' + foodId + '/force?_method=DELETE';
+            deleteForm.submit();
+          } 
         }
+
     });
 </script>
