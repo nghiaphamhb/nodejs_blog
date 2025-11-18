@@ -1,5 +1,6 @@
 import ProductModel from '../models/ProductModel.js';
 
+// Controller + REST Controller
 class ProductController {
   // [GET] /product
   async index(req, res, next) {
@@ -79,8 +80,8 @@ class ProductController {
     }
   }
   
-  // [DELETE] /product/:id
-  async destroy(req, res, next) {
+  // [DELETE] /product/:id (soft delete)
+  async delete(req, res, next) {
     try {
       const id = req.params.id;
       
@@ -126,6 +127,64 @@ class ProductController {
       next(err);
     }
   }
+
+  // [PATCH] /product/:id/restore
+  async restore(req, res, next) {
+    try {
+      const id = req.params.id;
+      await ProductModel.restore(id);   // gọi hàm restore trong model
+      res.redirect('/me/trash/products');
+    } catch (err) {
+      console.error('Restore controller error:', err);
+      next(err);
+    }
+  }
+
+  // [DELETE] /product/:id/force
+async forceDelete(req, res, next) {
+  try {
+    const id = req.params.id;
+
+    // Tìm cả record đã bị soft delete
+    const product = await ProductModel.findByIdWithDeleted(id);
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found',
+      });
+    }
+
+    const result = await ProductModel.delete(id); // HARD DELETE
+
+    if (result) {
+      if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+        return res.status(200).json({
+          success: true,
+          message: 'Product destroyed successfully',
+        });
+      }
+
+      // Request thường: quay về trang trash
+      return res.redirect('back');
+    } else {
+      throw new Error('Failed to destroy product');
+    }
+
+  } catch (err) {
+    console.error('Force delete error:', err);
+
+    if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1)) {
+      return res.status(500).json({
+        success: false,
+        message: 'Error destroying product',
+      });
+    }
+
+    next(err);
+  }
+}
+
+
 }
 
 export default new ProductController();
