@@ -32,13 +32,14 @@ This project is a **simple food blog** designed to:
 ![new food 2](docs/img/3.2.png)
 
 ### View all onwer's items 
-  - Edit item
+  - Select multiple items
+  - Edit (update) item
   - Remove item (soft delete)
 ![onwer food](docs/img/4.png)
 
 ![onwer food](docs/img/6.png)
 
-### View in trash's items 
+### View in trash
   - Restore removed item
   - Destroy item (permanently delete)
 ![onwer food](docs/img/5.png)
